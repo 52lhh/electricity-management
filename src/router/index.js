@@ -7,6 +7,8 @@ const Login = () => import('@/components/Login.vue');
 const Home = () => import("@/components/home/Home.vue");
 const Welcome = () => import("@/components/home/Welcome.vue")
 const Users = () => import("@/components/home/user/user.vue")
+const Rights = () => import("@/components/home/power/rights.vue")
+const Rloes = () => import("@/components/home/power/roles.vue")
 
 // 使用路由
 Vue.use(Router);
@@ -33,6 +35,12 @@ const routes = [
       {
         path: '/users',
         component: Users
+      }, {
+        path: '/rights',
+        component: Rights
+      }, {
+        path: '/roles',
+        component: Rloes
       }
     ]
   }
@@ -68,3 +76,4 @@ router.beforeEach((to, from, next) => {
 
 // 在Vue实例中挂载创建的路由实例
 export default router;
+
