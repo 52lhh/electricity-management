@@ -4,6 +4,9 @@ import Router from 'vue-router'
 
 // 使用懒加载加载路由组件
 const Login = () => import('@/components/Login.vue');
+const Home = () => import("@/components/home/Home.vue");
+const Welcome = () => import("@/components/home/Welcome.vue")
+const Users = () => import("@/components/home/user/user.vue")
 
 // 使用路由
 Vue.use(Router);
@@ -18,6 +21,21 @@ const routes = [
     path: '/login',
     component: Login
   },
+  {
+    path: '/home',
+    component: Home,
+    redirect: '/welcome',
+    children: [
+      {
+        path: '/welcome',
+        component: Welcome,
+      },
+      {
+        path: '/users',
+        component: Users
+      }
+    ]
+  }
 ]
 
 
