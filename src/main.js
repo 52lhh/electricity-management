@@ -3,6 +3,8 @@ import ElementUI from 'element-ui'
 import App from './App.vue'
 import router from './router/index.js'
 import axios from 'axios'
+// 引入表格树插件
+import TreeTable from 'vue-table-with-tree-grid'
 
 // 导入全局css
 import './assets/css/global.css'
@@ -12,7 +14,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/font/style.css'
 
 // 对Element-ui中的组件进行按需导入
-import { Form, FormItem, Input, Button, Message, Container, Header, Aside, Main, Row, Col, Menu, Submenu, MenuItemGroup, MenuItem, Breadcrumb, TableColumn, Table, Tooltip, Pagination, Dialog, MessageBox, Card, Tag, Tree, Select, Option } from 'element-ui'
+import { Form, FormItem, Input, Button, Message, Container, Header, Aside, Main, Row, Col, Menu, Submenu, MenuItemGroup, MenuItem, Breadcrumb, TableColumn, Table, Tooltip, Pagination, Dialog, MessageBox, Card, Tag, Tree, Select, Option, Cascader } from 'element-ui'
 
 Vue.use(Form);
 Vue.use(FormItem)
@@ -39,6 +41,9 @@ Vue.use(Tag)
 Vue.use(Tree)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Cascader)
+// 全局注册表格树组件
+Vue.component("tree-table", TreeTable)
 
 // 配置请求的根路径，全局配置
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1';

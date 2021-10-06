@@ -323,13 +323,30 @@ export default {
     },
     // 删除角色
     async removeRoles(id) {
-      // 请求成功后，返回Promise对象，为方便处理则使用await
-      const { data: res } = await this.$http.delete("roles/" + id);
-      if (res.meta.status !== 200) {
-        this.$message.error("删除角色失败");
+      // 返回值为Promise，为了方便处理则使用await
+      // confirmResult值为confirm（确定删除返回）和cancel（取消删除返回）
+      const confirmResult = await this.$confirm(
+        "此操作将永久删除该用户信息, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+
+      // 根据confirmResult返回值决定是否删除用户信息
+      if (confirmResult !== "confirm") {
+        return this.$message.info("已取消删除用户信息");
       } else {
-        this.getRolesList();
-        this.$message.success("删除角色成功");
+        // 请求成功后，返回Promise对象，为方便处理则使用await
+        const { data: res } = await this.$http.delete("roles/" + id);
+        if (res.meta.status !== 200) {
+          this.$message.error("删除角色失败");
+        } else {
+          this.getRolesList();
+          this.$message.success("删除角色成功");
+        }
       }
     },
     // 添加角色信息进行信息验证

@@ -6,9 +6,10 @@ import Router from 'vue-router'
 const Login = () => import('@/components/Login.vue');
 const Home = () => import("@/components/home/Home.vue");
 const Welcome = () => import("@/components/home/Welcome.vue")
-const Users = () => import("@/components/home/user/user.vue")
-const Rights = () => import("@/components/home/power/rights.vue")
-const Rloes = () => import("@/components/home/power/roles.vue")
+const Users = () => import("@/components/home/user/User.vue")
+const Rights = () => import("@/components/home/power/Rights.vue")
+const Rloes = () => import("@/components/home/power/Roles.vue")
+const Cate = () => import("@/components/home/goods/Cate.vue")
 
 // 使用路由
 Vue.use(Router);
@@ -41,6 +42,9 @@ const routes = [
       }, {
         path: '/roles',
         component: Rloes
+      }, {
+        path: '/categories',
+        component: Cate
       }
     ]
   }
