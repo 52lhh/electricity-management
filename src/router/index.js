@@ -1,6 +1,8 @@
 import Vue from 'vue'
 // 导入路由对象
 import Router from 'vue-router'
+// 使用路由
+Vue.use(Router);
 
 // 使用懒加载加载路由组件
 const Login = () => import('@/components/Login.vue');
@@ -10,9 +12,7 @@ const Users = () => import("@/components/home/user/User.vue")
 const Rights = () => import("@/components/home/power/Rights.vue")
 const Rloes = () => import("@/components/home/power/Roles.vue")
 const Cate = () => import("@/components/home/goods/Cate.vue")
-
-// 使用路由
-Vue.use(Router);
+const Params = () => import("@/components/home/goods/Params.vue")
 
 // 创建路由映射
 const routes = [
@@ -45,6 +45,9 @@ const routes = [
       }, {
         path: '/categories',
         component: Cate
+      }, {
+        path: "/params",
+        component: Params
       }
     ]
   }
@@ -67,14 +70,15 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
     // 当直接访问login登陆界面时，直接放行
     return next();
-  }
-  // 获取浏览器sessionStorage中的token
-  const isToken = window.sessionStorage.getItem('token');
-  // 如果浏览器sessionStorage中没有token，则强制跳转login登陆界面
-  if (!isToken) {
-    return next('/login');
   } else {
-    return next();
+    // 获取浏览器sessionStorage中的token
+    const isToken = window.sessionStorage.getItem('token');
+    // 如果浏览器sessionStorage中没有token，则强制跳转login登陆界面
+    if (!isToken) {
+      return next('/login');
+    } else {
+      return next();
+    }
   }
 })
 

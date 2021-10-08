@@ -62,6 +62,7 @@
         :border="true"
         :selection-type="false"
         :expand-type="false"
+        :show-row-hover="false"
       >
         <!-- 是否有效列 -->
         <template slot="isOk" slot-scope="scope">

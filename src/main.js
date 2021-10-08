@@ -14,7 +14,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/font/style.css'
 
 // 对Element-ui中的组件进行按需导入
-import { Form, FormItem, Input, Button, Message, Container, Header, Aside, Main, Row, Col, Menu, Submenu, MenuItemGroup, MenuItem, Breadcrumb, TableColumn, Table, Tooltip, Pagination, Dialog, MessageBox, Card, Tag, Tree, Select, Option, Cascader } from 'element-ui'
+import { Form, FormItem, Input, Button, Message, Container, Header, Aside, Main, Row, Col, Menu, Submenu, MenuItemGroup, MenuItem, Breadcrumb, TableColumn, Table, Tooltip, Pagination, Dialog, MessageBox, Card, Tag, Tree, Select, Option, Cascader, Alert } from 'element-ui'
 
 Vue.use(Form);
 Vue.use(FormItem)
@@ -42,6 +42,7 @@ Vue.use(Tree)
 Vue.use(Select)
 Vue.use(Option)
 Vue.use(Cascader)
+Vue.use(Alert)
 // 全局注册表格树组件
 Vue.component("tree-table", TreeTable)
 
