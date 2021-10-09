@@ -39,7 +39,7 @@
           >
             添加参数
           </el-button>
-          <!-- 动态参数表格 -->
+          <!-- 动态参数表格区域 -->
           <el-table :data="manyTableData" style="width: 100%">
             <!-- 展开列 -->
             <el-table-column type="expand" width="50">
@@ -181,13 +181,13 @@
     >
       <!-- 添加参数/添加属性表单 -->
       <el-form
-        :model="addFrom"
-        :rules="addFromRules"
+        :model="addForm"
+        :rules="addFormRules"
         ref="addFormRef"
         label-width="100px"
       >
         <el-form-item :label="titleText + '：'" prop="attr_name">
-          <el-input v-model="addFrom.attr_name"></el-input>
+          <el-input v-model="addForm.attr_name"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -204,13 +204,13 @@
     >
       <!-- 修改参数/修改属性表单 -->
       <el-form
-        :model="editFrom"
-        :rules="editFromRules"
+        :model="editForm"
+        :rules="editFormRules"
         ref="editFormRef"
         label-width="100px"
       >
         <el-form-item :label="titleText + '：'" prop="attr_name">
-          <el-input v-model="editFrom.attr_name"></el-input>
+          <el-input v-model="editForm.attr_name"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -248,12 +248,12 @@ export default {
       onlyTableData: [],
       // 控制添加参数/添加属性弹框出现与隐藏
       addDialogVisible: false,
-      // 绑定添加表单验证的属性
-      addFrom: {
+      // 添加分类参数表单的对象
+      addForm: {
         attr_name: "",
       },
-      // 绑定添加表单验证属性的规则
-      addFromRules: {
+      // 添加分类参数表单的对象的验证规则
+      addFormRules: {
         attr_name: [
           {
             required: true,
@@ -265,10 +265,10 @@ export default {
       },
       // 控制修改动态参数名称/静态属性名称的出现与隐藏
       editDialogVisible: false,
-      // 绑定修改表单验证的属性
-      editFrom: {},
-      // 绑定修改表单验证属性的规则
-      editFromRules: {
+      // 编辑分类参数表单的数据对象
+      editForm: {},
+      // 编辑分类参数表单的数据对象中属性的验证规则
+      editFormRules: {
         attr_name: [
           {
             required: true,
@@ -359,7 +359,7 @@ export default {
           const { data: res } = await this.$http.post(
             `categories/${this.cateId}/attributes`,
             {
-              attr_name: this.addFrom.attr_name,
+              attr_name: this.addForm.attr_name,
               attr_sel: this.activeName,
             }
           );
@@ -388,7 +388,7 @@ export default {
       if (res.meta.status !== 200) {
         this.$message.error("获取参数失败");
       } else {
-        this.editFrom = res.data;
+        this.editForm = res.data;
       }
 
       this.editDialogVisible = true;
@@ -404,9 +404,9 @@ export default {
           return;
         } else {
           const { data: res } = await this.$http.put(
-            `categories/${this.cateId}/attributes/${this.editFrom.attr_id}`,
+            `categories/${this.cateId}/attributes/${this.editForm.attr_id}`,
             {
-              attr_name: this.editFrom.attr_name,
+              attr_name: this.editForm.attr_name,
               attr_sel: this.activeName,
             }
           );

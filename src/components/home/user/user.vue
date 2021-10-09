@@ -8,7 +8,7 @@
     </el-breadcrumb>
     <!-- 搜索框区域 -->
     <el-row :gutter="20">
-      <el-col :span="10">
+      <el-col :span="8">
         <div style="margin-top: 15px">
           <el-input
             placeholder="请输入内容"
@@ -352,7 +352,7 @@ export default {
     addUSer() {
       this.$refs.ruleFormRef.validate(async (valid) => {
         if (!valid) {
-          return;
+          return false;
         } else {
           // 因为请求返回的数据类型为Promise，因此使用await方便处理
           const { data: res } = await this.$http.post(

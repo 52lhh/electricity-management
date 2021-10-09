@@ -5,6 +5,8 @@ import router from './router/index.js'
 import axios from 'axios'
 // 引入表格树插件
 import TreeTable from 'vue-table-with-tree-grid'
+// 引入富文本编辑器
+import VueQuillEditor from 'vue-quill-editor'
 
 // 导入全局css
 import './assets/css/global.css'
@@ -12,9 +14,13 @@ import './assets/css/global.css'
 import 'element-ui/lib/theme-chalk/index.css'
 // 导入字体图标
 import '@/assets/font/style.css'
+// 导入富文本编辑器相关样式
+import 'quill/dist/quill.core.css' // import styles
+import 'quill/dist/quill.snow.css' // for snow theme
+import 'quill/dist/quill.bubble.css' // for bubble theme
 
 // 对Element-ui中的组件进行按需导入
-import { Form, FormItem, Input, Button, Message, Container, Header, Aside, Main, Row, Col, Menu, Submenu, MenuItemGroup, MenuItem, Breadcrumb, TableColumn, Table, Tooltip, Pagination, Dialog, MessageBox, Card, Tag, Tree, Select, Option, Cascader, Alert } from 'element-ui'
+import { Form, FormItem, Input, Button, Message, Container, Header, Aside, Main, Row, Col, Menu, Submenu, MenuItemGroup, MenuItem, Breadcrumb, TableColumn, Table, Tooltip, Pagination, Dialog, MessageBox, Card, Tag, Tree, Select, Option, Cascader, Alert, Steps, Step, Tabs, CheckboxGroup, Checkbox, Upload } from 'element-ui'
 
 Vue.use(Form);
 Vue.use(FormItem)
@@ -43,8 +49,16 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(Cascader)
 Vue.use(Alert)
+Vue.use(Steps)
+Vue.use(Step)
+Vue.use(Tabs)
+Vue.use(Checkbox)
+Vue.use(CheckboxGroup)
+Vue.use(Upload)
 // 全局注册表格树组件
 Vue.component("tree-table", TreeTable)
+// 全局注册富文本编辑器
+Vue.use(VueQuillEditor)
 
 // 配置请求的根路径，全局配置
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1';
@@ -55,6 +69,30 @@ Vue.prototype.$http = axios
 Vue.prototype.$massage = Message
 // 将Element-ui中的MessageBox消息弹框组件进行挂载
 Vue.prototype.$confirm = MessageBox
+// 全局注册一个时间处理的过滤器
+Vue.filter('dateFormat', function (originVal) {
+  const time = new Date(originVal);
+
+  // 年
+  const year = time.getFullYear();
+  // 月
+  const m = time.getMonth() + 1;
+  const month = m < 10 ? '0' + m : m;
+  // 日
+  const d = time.getDate();
+  const day = d < 10 ? '0' + d : d;
+  // 时
+  const h = time.getHours();
+  const hour = h < 10 ? '0' + h : h;
+  // 分
+  const mt = time.getMinutes();
+  const minute = mt < 10 ? '0' + mt : mt;
+  // 秒
+  const sd = time.getSeconds();
+  const second = sd < 10 ? '0' + sd : sd;
+
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`
+})
 
 Vue.config.productionTip = false
 

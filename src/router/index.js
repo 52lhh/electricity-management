@@ -13,6 +13,8 @@ const Rights = () => import("@/components/home/power/Rights.vue")
 const Rloes = () => import("@/components/home/power/Roles.vue")
 const Cate = () => import("@/components/home/goods/Cate.vue")
 const Params = () => import("@/components/home/goods/Params.vue")
+const Goods = () => import("@/components/home/goods/Goods.vue")
+const Add = () => import("@/components/home/goods/Add.vue")
 
 // 创建路由映射
 const routes = [
@@ -48,6 +50,14 @@ const routes = [
       }, {
         path: "/params",
         component: Params
+      },
+      {
+        path: "/goods",
+        component: Goods,
+      },
+      {
+        path: '/goods/add',
+        component: Add
       }
     ]
   }

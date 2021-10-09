@@ -36,15 +36,15 @@
                 <!-- 文字 -->
                 <span>{{ item.authName }}</span>
               </template>
-              <!-- 子菜单组 -->
+              <!-- 二级菜单组 -->
               <el-menu-item-group>
                 <!-- 每个子菜单组中的子菜单项 -->
                 <el-menu-item
-                  :index="chlidItem.path"
+                  :index="'/' + chlidItem.path"
                   v-for="chlidItem in item.children"
                   :key="chlidItem.id"
                   class="icon-menu"
-                  @click="saveNavActive(chlidItem.path)"
+                  @click="saveNavActive('/' + chlidItem.path)"
                 >
                   {{ chlidItem.authName }}
                 </el-menu-item>
@@ -66,7 +66,7 @@ export default {
   name: "home",
   // 先完成Home导航，然后在接下来的组件生命周期钩子中获取数据
   created() {
-    // 当Home页面被加载时，立即执行getMenuList()函数
+    // 当Home页面被加载时，立即执行getMenuList()函数，获取菜单列表
     this.getMenuList();
     // 将sessionStorage中的子菜单path赋值给isActivePath
     this.isActivePath = window.sessionStorage.getItem("activePath");
@@ -98,9 +98,10 @@ export default {
       // await返回一个Promise对象resolve的值
       const { data: res } = await this.$http.get("menus");
       if (res.meta.status !== 200) {
-        return this.$massage.error(res.meta.msg);
+        return this.$massage.error("获取菜单列表失败");
       } else {
         this.menuList = res.data;
+        console.log(this.menuList);
       }
     },
     // 控制侧边菜单是否展开

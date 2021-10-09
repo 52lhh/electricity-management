@@ -28,13 +28,13 @@
       >
         <!-- 添加分类表单 -->
         <el-form
-          :model="addCateFrom"
-          :rules="addCateFromRules"
-          ref="addCateFromRef"
+          :model="addCateForm"
+          :rules="addCateFormRules"
+          ref="addCateFormRef"
           label-width="100px"
         >
           <el-form-item label="分类名称：" prop="cat_name">
-            <el-input v-model="addCateFrom.cat_name"></el-input>
+            <el-input v-model="addCateForm.cat_name"></el-input>
           </el-form-item>
           <el-form-item label="父级分类：">
             <!-- options指定的是分类数据源 -->
@@ -92,14 +92,14 @@
           <el-button
             size="mini"
             type="primary"
-            @click="editCateNameFrom(scope.row.cat_id)"
+            @click="editCateNameForm(scope.row.cat_id)"
           >
             编辑
           </el-button>
           <el-button
             size="mini"
             type="danger"
-            @click="removeCateFrom(scope.row.cat_id)"
+            @click="removeCateForm(scope.row.cat_id)"
           >
             删除
           </el-button>
@@ -125,13 +125,13 @@
       @close="editDialogClose"
     >
       <el-form
-        :model="editCateFrom"
-        :rules="editCateFromRules"
-        ref="editCateFromRef"
+        :model="editCateForm"
+        :rules="editCateFormRules"
+        ref="editCateFormRef"
         label-width="100px"
       >
         <el-form-item label="分类名称：" prop="cat_name">
-          <el-input v-model="editCateFrom.cat_name"></el-input>
+          <el-input v-model="editCateForm.cat_name"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -196,7 +196,7 @@ export default {
       addCatedialogVisible: false,
       // 添加分类的分类名称表单的验证属性
       // 添加分类的表单数据对象
-      addCateFrom: {
+      addCateForm: {
         // 要添加分类的名称
         cat_name: "",
         // 要添加父级分类的id
@@ -204,8 +204,8 @@ export default {
         // 要添加分类的等级，默认为一级
         cat_level: 0,
       },
-      // 添加分类的分类名称表单的验证属性对应的验证规则
-      addCateFromRules: {
+      // 添加分类的表单数据对象中属性的验证规则
+      addCateFormRules: {
         cat_name: [
           { required: true, message: "请输入分类名称", trigger: "blur" },
           { min: 1, max: 8, message: "长度在 1 到 8 个字符", trigger: "blur" },
@@ -224,9 +224,9 @@ export default {
       // selectCateKeys必须为一个数组，因为其中包含的不止一个父级的id，比如父级和祖先级
       selectCateKeys: [],
       // 修改分类名称对话框表单的验证属性
-      editCateFrom: {},
+      editCateForm: {},
       // 修改分类名称对话框表单的验证属性的验证规则
-      editCateFromRules: {
+      editCateFormRules: {
         cat_name: [
           { required: true, message: "请输入分类名称", trigger: "blur" },
           { min: 1, max: 8, message: "长度在 1 到 8 个字符", trigger: "blur" },
@@ -282,14 +282,14 @@ export default {
     },
     // 对添加分类的表单进行数据验证，验证成功则提交
     editCateInfo() {
-      this.$refs.addCateFromRef.validate(async (vaild) => {
+      this.$refs.addCateFormRef.validate(async (vaild) => {
         if (!vaild) {
           // 若表单检验未通过，则不允许点击确定按钮提交数据
           return;
         } else {
           const { data: res } = await this.$http.post(
             "categories",
-            this.addCateFrom
+            this.addCateForm
           );
           if (res.meta.status !== 201) {
             this.$message.error("添加分类失败");
@@ -306,36 +306,36 @@ export default {
       // 通过判断selectCateKeys数组长度来确定，添加的分类为几级分类
       if (this.selectCateKeys.length === 0) {
         // 若selectCateKeys数组长度为0，则添加分类为一级分类
-        this.addCateFrom.cat_pid = 0;
-        this.addCatesFrom.cat_level = 0;
+        this.addCateForm.cat_pid = 0;
+        this.addCatesForm.cat_level = 0;
       } else {
         // 当联机选择器选择父级后，selectCateKeys数组长度不为0
-        // 则addCateFrom.cat_pid为最近一级父级的id
-        // addCateFrom.cat_level为几级分类（相当数组长度）
-        this.addCateFrom.cat_pid =
+        // 则addCateForm.cat_pid为最近一级父级的id
+        // addCateForm.cat_level为几级分类（相当数组长度）
+        this.addCateForm.cat_pid =
           this.selectCateKeys[this.selectCateKeys.length - 1];
-        this.addCateFrom.cat_level = this.selectCateKeys.length;
+        this.addCateForm.cat_level = this.selectCateKeys.length;
       }
-      console.log(this.addCateFrom);
+      console.log(this.addCateForm);
       console.log(this.selectCateKeys);
     },
     // 监听关闭分类对话框时清空表单和级联选择器绑定的父级数组
     addDialogClose() {
-      this.$refs.addCateFromRef.resetFields();
+      this.$refs.addCateFormRef.resetFields();
 
       this.selectCateKeys = [];
     },
     // 监听关闭修改分类名称对话框时清空表单
     editDialogClose() {
-      this.$refs.editCateFromRef.resetFields();
+      this.$refs.editCateFormRef.resetFields();
     },
     // 弹出修改分类名称的对话框，并根据id查询当前分类的信息
-    async editCateNameFrom(id) {
+    async editCateNameForm(id) {
       const { data: res } = await this.$http.get("categories/" + id);
       if (res.meta.status !== 200) {
         this.$message.error("获取当前分类信息失败");
       } else {
-        this.editCateFrom = res.data;
+        this.editCateForm = res.data;
       }
 
       this.editCateNameDialogVisible = true;
@@ -343,8 +343,8 @@ export default {
     // 提交修改名称表单的内容
     async editCateNameInfo() {
       const { data: res } = await this.$http.put(
-        "categories/" + this.editCateFrom.cat_id,
-        { cat_name: this.editCateFrom.cat_name }
+        "categories/" + this.editCateForm.cat_id,
+        { cat_name: this.editCateForm.cat_name }
       );
       if (res.meta.status !== 200) {
         this.$message.error("修改分类名称失败");
@@ -355,7 +355,7 @@ export default {
       }
     },
     // 删除某个分类
-    async removeCateFrom(id) {
+    async removeCateForm(id) {
       // 返回值为Promise，为了方便处理则使用await
       // confirmResult值为confirm（确定删除返回）和cancel（取消删除返回）
       const confirmResult = await this.$confirm(
