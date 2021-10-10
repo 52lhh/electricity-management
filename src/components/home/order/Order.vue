@@ -27,10 +27,10 @@
         <el-table-column prop="order_price" label="订单价格"> </el-table-column>
         <el-table-column prop="order_pay" label="是否付款">
           <template slot-scope="scope">
-            <el-tag type="success" v-show="scope.row.order_pay === '1'">
+            <el-tag type="success" v-show="scope.row.pay_status === '1'">
               已付款
             </el-tag>
-            <el-tag type="danger" v-show="scope.row.order_pay === '0'">
+            <el-tag type="danger" v-show="scope.row.pay_status === '0'">
               未付款
             </el-tag>
           </template>
@@ -44,20 +44,38 @@
           </template>
         </el-table-column>
         <el-table-column label="操作">
-          <!-- 编辑按钮 -->
-          <el-button
-            type="primary"
-            icon="el-icon-edit"
-            size="mini"
-            @click="showAddress"
-          ></el-button>
-          <!-- 获取物流位置按钮 -->
-          <el-button
-            type="success"
-            icon="el-icon-location-information"
-            size="mini"
-            @click="showProgressDialog"
-          ></el-button>
+          <template slot-scope="scope">
+            <!-- 修改订单状态按钮 -->
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="修改订单状态"
+              placement="top"
+              :enterable="false"
+            >
+              <el-button
+                type="primary"
+                icon="el-icon-edit"
+                size="mini"
+                @click="showAddress(scope.row.order_id)"
+              ></el-button>
+            </el-tooltip>
+            <!-- 查看物流信息按钮 -->
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="查看物流信息"
+              placement="top"
+              :enterable="false"
+            >
+              <el-button
+                type="success"
+                icon="el-icon-location-information"
+                size="mini"
+                @click="showProgressDialog"
+              ></el-button>
+            </el-tooltip>
+          </template>
         </el-table-column>
       </el-table>
       <!-- 分页功能 -->
@@ -72,14 +90,14 @@
       >
       </el-pagination>
     </el-card>
-    <!-- 修改地址对话框 -->
+    <!-- 修改订单信息对话框 -->
     <el-dialog
       title="修改地址"
       :visible.sync="addressVisible"
       width="50%"
       @close="closeAddressDialog"
     >
-      <!-- 修改地址表单 -->
+      <!-- 修改订单信息表单 -->
       <el-form
         :model="addressForm"
         :rules="addressFormRules"
@@ -94,6 +112,9 @@
         </el-form-item>
         <el-form-item label="详细地址" prop="address2">
           <el-input v-model="addressForm.address2"></el-input>
+        </el-form-item>
+        <el-form-item label="订单价格" prop="order_price">
+          <el-input v-model="addressForm.order_price" type="number"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -151,6 +172,8 @@ export default {
         address1: [],
         // address2为详细地址，为字符串
         address2: "",
+        // 订单价格
+        order_price: 0,
       },
       // 修改地址表单绑定的地址对象的验证规则
       addressFormRules: {
@@ -159,6 +182,9 @@ export default {
         ],
         address2: [
           { required: true, message: "请输入详细地址", trigger: "blur" },
+        ],
+        order_price: [
+          { required: true, message: "请输入订单价格", trigger: "blur" },
         ],
       },
       // 使用省市区/县联动选择组件
@@ -191,8 +217,16 @@ export default {
       this.queryInfo.pagenum = newNum;
       this.getOrderList();
     },
-    // 显示修改地址对话框
-    showAddress() {
+    // 显示修改订单信息对话框
+    async showAddress(id) {
+      // 发起查看订单详情的请求
+      const { data: res } = await this.$http.get(`orders/${id}`);
+      if (res.meta.status !== 200) {
+        this.$message.error("获取订单信息失败");
+      } else {
+        this.addressForm = res.data;
+        console.log(this.addressForm);
+      }
       this.addressVisible = true;
     },
     // 关闭地址对话框触发
@@ -201,10 +235,23 @@ export default {
     },
     // 点击地址对话框确定按钮，进行表单校验
     checkAddress() {
-      this.$refs.addressFormRef.validate((vaild) => {
+      this.$refs.addressFormRef.validate(async (vaild) => {
         if (!vaild) {
           return;
         } else {
+          const { data: res } = await this.$http.put(
+            `orders/${this.addressForm.order_id}`,
+            this.addressForm
+          );
+          if (res.meta.status !== 201) {
+            this.$message.error("修改订单信息失败");
+          } else {
+            this.$message.success("修改订单信息成功");
+            this.getOrderList();
+            console.log(this.addressForm);
+          }
+          // console.log(this.addressForm.consignee_addr);
+          // console.log(this.addressForm.address1);
           this.addressVisible = false;
         }
       });
@@ -289,6 +336,12 @@ export default {
       ];
       console.log(this.progressInfo);
       this.progressVisible = true;
+    },
+  },
+  computed: {
+    // 将收货地址进行拼接
+    consigneeAddr() {
+      return this.addressForm.address1.join("") + this.addressForm.address2;
     },
   },
 };
