@@ -40,7 +40,8 @@
         </el-table-column>
         <el-table-column prop="add_time" label="创建时间" width="200">
           <template slot-scope="scope">
-            <!-- 调用filter过滤器dateFormat，将add_time过滤为时间格式 -->
+            <!-- 调用filter全局过滤器dateFormat，将add_time过滤为时间格式 -->
+            <!-- "|"管道符号，表示调用全局过滤器 -->
             {{ scope.row.add_time | dateFormat }}
           </template>
         </el-table-column>

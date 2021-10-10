@@ -15,6 +15,7 @@ const Cate = () => import("@/components/home/goods/Cate.vue")
 const Params = () => import("@/components/home/goods/Params.vue")
 const Goods = () => import("@/components/home/goods/Goods.vue")
 const Add = () => import("@/components/home/goods/Add.vue")
+const Order = () => import("@/components/home/order/Order.vue")
 
 // 创建路由映射
 const routes = [
@@ -58,6 +59,10 @@ const routes = [
       {
         path: '/goods/add',
         component: Add
+      },
+      {
+        path: '/orders',
+        component: Order
       }
     ]
   }

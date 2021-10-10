@@ -20,7 +20,7 @@ import 'quill/dist/quill.snow.css' // for snow theme
 import 'quill/dist/quill.bubble.css' // for bubble theme
 
 // 对Element-ui中的组件进行按需导入
-import { Form, FormItem, Input, Button, Message, Container, Header, Aside, Main, Row, Col, Menu, Submenu, MenuItemGroup, MenuItem, Breadcrumb, TableColumn, Table, Tooltip, Pagination, Dialog, MessageBox, Card, Tag, Tree, Select, Option, Cascader, Alert, Steps, Step, Tabs, CheckboxGroup, Checkbox, Upload } from 'element-ui'
+import { Form, FormItem, Input, Button, Message, Container, Header, Aside, Main, Row, Col, Menu, Submenu, MenuItemGroup, MenuItem, Breadcrumb, TableColumn, Table, Tooltip, Pagination, Dialog, MessageBox, Card, Tag, Tree, Select, Option, Cascader, Alert, Steps, Step, Tabs, CheckboxGroup, Checkbox, Upload, Timeline } from 'element-ui'
 
 Vue.use(Form);
 Vue.use(FormItem)
@@ -55,6 +55,7 @@ Vue.use(Tabs)
 Vue.use(Checkbox)
 Vue.use(CheckboxGroup)
 Vue.use(Upload)
+Vue.use(Timeline)
 // 全局注册表格树组件
 Vue.component("tree-table", TreeTable)
 // 全局注册富文本编辑器
