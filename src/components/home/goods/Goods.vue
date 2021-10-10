@@ -142,6 +142,9 @@ export default {
         goods_weight: [
           { required: true, message: "请输入商品重量", trigger: "blur" },
         ],
+        goods_introduce: [
+          { required: true, message: "请输入商品介绍", trigger: "blur" },
+        ],
       },
       // 控制编辑商品的弹出框的显示与隐藏
       editDialogVisible: false,
