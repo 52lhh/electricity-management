@@ -99,14 +99,27 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI);
 
+// 导入Nprogress包对应的js和css
+import NProgress from "nprogress"
+import "nprogress/nprogress.css"
+
 // 请求拦截
+// 在request拦截器中，显示加载页面进度条：NProgress.start();
 axios.interceptors.request.use(config => {
   // 根据接口文档，将config数据拦截后，给请求头Authorization提供token令牌
   config.headers.Authorization = window.sessionStorage.getItem("token");
   // console.log(config);
+  NProgress.start();
   // 拦截请求后，必须对config进行返回
   return config;
 })
+
+// 在response拦截器中，显示加载页面进度条：NProgress.done();
+axios.interceptors.response.use(config => {
+  NProgress.done();
+  return config
+})
+
 
 new Vue({
   router,
